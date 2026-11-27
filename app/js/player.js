@@ -145,7 +145,10 @@ var Player = (function () {
     }
     P.failed = true;
     if (P.mixed) {
-      showError('El navegador bloqueó este canal', 'Usa una conexión http y esta página es https. Permite el "Contenido no seguro" para este sitio en el navegador, o míralo en la app del TV o de Android.');
+      var isHls = mimeFor(P.item.url) === 'application/vnd.apple.mpegurl';
+      showError('No se pudo reproducir en el navegador', isHls ?
+        'Canal http: si no permitiste el "Contenido no seguro" para este sitio, el navegador lo bloquea. Si ya lo permitiste, el canal puede estar caído. Pruébalo en la app del TV o de Android.' :
+        'Este enlace no es HLS (.m3u8), por ejemplo un flujo .ts: los navegadores no lo reproducen. Funciona en la app del TV o de Android.');
       return;
     }
     var msg = code === 4 ? 'El formato no es compatible o el enlace no está disponible.' :
