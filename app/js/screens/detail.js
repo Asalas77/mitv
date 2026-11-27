@@ -42,7 +42,7 @@ var DetailScreen = (function () {
       onFocus: function (el) { var i = parseInt(el.getAttribute('data-i'), 10); if (i !== sIdx) selectSeason(i); }
     });
     epsZ = new ListZone({
-      el: els.eps, itemHeight: 104, visible: 4,
+      el: els.eps, itemHeight: App.mobile ? 70 : 104, visible: 4,
       count: function () { return eps.length; },
       render: renderEp,
       onFocus: function (i) { var e = eps[i]; U.setText(els.desc, (e && e.overview) || item.overview || ''); },
@@ -64,7 +64,7 @@ var DetailScreen = (function () {
     U.show(els.actions, !isSeries);
     U.show(els.seasons, isSeries);
     U.show(els.eps, isSeries);
-    if (isSeries) { loadSeasons(); setZone(seasonsZ); }
+    if (isSeries) { loadSeasons(); setZone(seasonsZ); if (App.mobile) epsZ.fit(); }
     else { renderActions(); setZone(acts); }
   }
   function renderActions() {

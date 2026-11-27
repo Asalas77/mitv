@@ -69,7 +69,19 @@ function ListZone(o) {
     if (self.o.activate) self.o.activate(self);
     if (i !== self.index) { self.index = i; self.render(true); if (self.o.onFocus) self.o.onFocus(i); }
   });
+  // Deslizar con el dedo (celular): mueve la lista sin cambiar el elemento elegido.
+  var ty0 = 0, top0 = 0, moved = false;
+  this.el.addEventListener('touchstart', function (e) { ty0 = e.touches[0].clientY; top0 = self.top; moved = false; }, false);
+  this.el.addEventListener('touchmove', function (e) {
+    var dy = e.touches[0].clientY - ty0, n = self.o.count();
+    if (Math.abs(dy) > 8) moved = true;
+    if (!moved) return;
+    e.preventDefault();
+    self.top = U.clamp(top0 - dy / (self.o.itemHeight * ((window.App && App.scale) || 1)), 0, Math.max(0, n - self.o.visible));
+    self.render(true);
+  }, false);
   this.el.addEventListener('click', function (e) {
+    if (moved) { moved = false; return; }
     var i = rowIndex(e);
     if (i < 0) return;
     if (self.o.activate) self.o.activate(self);
@@ -85,6 +97,12 @@ function ListZone(o) {
     self.setIndex(U.clamp(self.index + (e.deltaY > 0 ? 1 : -1), 0, n - 1));
   });
 }
+// Ajusta cuántas filas caben según el alto real del contenedor (celular, al girar la pantalla).
+ListZone.prototype.fit = function () {
+  var h = this.el.clientHeight;
+  if (h > 0) this.o.visible = Math.max(1, Math.floor(h / this.o.itemHeight));
+  this.render(true);
+};
 ListZone.prototype.focus = function () { this.active = true; U.addClass(this.el, 'zone-active'); this.render(); };
 ListZone.prototype.blur = function () { this.active = false; U.removeClass(this.el, 'zone-active'); };
 ListZone.prototype.clearRows = function () {
@@ -127,7 +145,7 @@ ListZone.prototype.render = function (keepScroll) {
   var ty = 'translateY(' + (-this.top * h) + 'px)';
   this.inner.style.webkitTransform = ty;
   this.inner.style.transform = ty;
-  var from = Math.max(0, this.top - 1), to = Math.min(n - 1, this.top + vis);
+  var from = Math.max(0, Math.floor(this.top) - 1), to = Math.min(n - 1, Math.ceil(this.top) + vis);
   for (k in this.rows) {
     if (!this.rows.hasOwnProperty(k)) continue;
     i = parseInt(k, 10);
@@ -278,7 +296,29 @@ function RowsZone(o) {
     if (self.o.activate) self.o.activate(self);
     if (r !== self.r || ci !== (self.cols[r] || 0)) { self.r = r; self.cols[r] = ci; self.render(true); self.fire(); }
   });
+  // Deslizar (celular): horizontal recorre la fila, vertical cambia de fila.
+  var x0 = 0, y0 = 0, swiped = false;
+  this.el.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; swiped = false; }, false);
+  this.el.addEventListener('touchmove', function (e) {
+    var dx = e.touches[0].clientX - x0, dy = e.touches[0].clientY - y0;
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) e.preventDefault();
+  }, false);
+  this.el.addEventListener('touchend', function (e) {
+    var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0, rows = self.o.rows();
+    if (Math.abs(dx) < 40 && Math.abs(dy) < 40) return;
+    swiped = true;
+    if (self.o.activate) self.o.activate(self);
+    if (Math.abs(dx) > Math.abs(dy)) {
+      var row = rows[self.r], step = Math.max(1, Math.floor(self.o.visibleCards / 2));
+      if (row) self.cols[self.r] = U.clamp((self.cols[self.r] || 0) + (dx < 0 ? step : -step), 0, row.items.length - 1);
+    } else {
+      self.r = U.clamp(self.r + (dy < 0 ? 1 : -1), 0, rows.length - 1);
+    }
+    self.render();
+    self.fire();
+  }, false);
   this.el.addEventListener('click', function (e) {
+    if (swiped) { swiped = false; return; }
     var c = cardOf(e);
     if (!c) return;
     if (self.o.activate) self.o.activate(self);

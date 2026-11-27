@@ -264,7 +264,7 @@ var GuideScreen = (function () {
     if (focusOn === 'chip' && chans.length) { setFocus('grid'); return true; }
     return false;
   };
-  S.previewRect = function () { return { left: 1222, top: 134, width: 646, height: 362 }; };
+  S.previewRect = function () { return App.rectOf(U.$('.preview-box', S.el)); };
   S.onPlayerExit = function () { setFocus('grid'); };
 
   return S;

@@ -4,9 +4,23 @@ var App = (function () {
   var A = { cur: null, inMenu: false, scale: 1, screens: {} };
 
   // La interfaz se diseña a 1920x1080 y se escala al tamaño real de la pantalla.
+  // Celular: interfaz táctil a tamaño real (no se escala la de TV).
+  A.mobile = /Mobi|iPhone|iPod/i.test(navigator.userAgent) ||
+    (('ontouchstart' in window) && Math.min(screen.width, screen.height) < 600);
   function fit() {
-    var w = window.innerWidth || 1920, h = window.innerHeight || 1080;
-    var s = Math.min(w / 1920, h / 1080), st = U.$('#stage'), tr = 'scale(' + s + ')';
+    var w = window.innerWidth || 1920, h = window.innerHeight || 1080, st = U.$('#stage');
+    if (A.mobile) {
+      U.addClass(document.body, 'mobile');
+      U.toggleClass(document.body, 'portrait', h >= w);
+      st.style.webkitTransform = st.style.transform = 'none';
+      st.style.left = st.style.top = '0px';
+      st.style.width = w + 'px';
+      st.style.height = h + 'px';
+      A.scale = 1;
+      if (A.started) Data.emit('resize');
+      return;
+    }
+    var s = Math.min(w / 1920, h / 1080), tr = 'scale(' + s + ')';
     st.style.webkitTransform = tr;
     st.style.transform = tr;
     st.style.left = Math.round((w - 1920 * s) / 2) + 'px';
@@ -114,6 +128,15 @@ var App = (function () {
     dispatch(k);
   }
 
+  // Rectángulo interior de un elemento, en coordenadas del escenario (para ubicar el video en miniatura).
+  A.rectOf = function (el) {
+    var s = A.scale || 1, r = el.getBoundingClientRect(), st = U.$('#stage').getBoundingClientRect();
+    return {
+      left: Math.round((r.left - st.left) / s + el.clientLeft), top: Math.round((r.top - st.top) / s + el.clientTop),
+      width: el.clientWidth, height: el.clientHeight
+    };
+  };
+
   // Para la versión Android: la tecla Atrás del sistema llega como App.key('back').
   A.key = function (k) { dispatch(k); };
 
@@ -141,6 +164,7 @@ var App = (function () {
     }, false);
     Clock.start();
     setInterval(function () { Data.emit('minute'); }, 60000);
+    A.started = true;
     A.go('live');
     Data.loadLive();
     Data.loadVod();

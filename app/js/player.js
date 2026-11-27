@@ -42,6 +42,11 @@ var Player = (function () {
     v.addEventListener('ended', onEnded);
     v.addEventListener('error', function () { onError(v.error ? v.error.code : 0, session); });
 
+    // Botón ✕ (celular): sale de la pantalla completa, como la tecla Atrás.
+    U.$('.p-close', P.el).addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (P.kind === 'vod') App.exitVod(); else App.exitFullLive();
+    });
     P.el.addEventListener('click', function (e) {
       if (P.mode === 'mini') { P.setMode('full'); if (P.kind === 'live') showBanner(); return; }
       if (P.mode !== 'full') return;
@@ -52,7 +57,7 @@ var Player = (function () {
     P.el.addEventListener('mousemove', function () { if (P.mode === 'full' && P.kind === 'vod') showVodBar(); });
 
     zap.zone = new ListZone({
-      el: U.$('.pz-list', P.el), itemHeight: 86, visible: 10,
+      el: U.$('.pz-list', P.el), itemHeight: App.mobile ? 60 : 86, visible: 10,
       count: function () { return zapItems().length; },
       render: function (i, row) { var c = zapItems()[i]; if (c) row.appendChild(ChannelRow.build(c)); },
       emptyText: 'No hay canales en esta categoría',
@@ -417,6 +422,7 @@ var Player = (function () {
     zap.zone.index = Math.max(0, i);
     zap.zone.top = Math.max(0, zap.zone.index - 4);
     zap.zone.reset();
+    if (App.mobile) zap.zone.fit();
     zap.zone.focus();
   }
   function closeZap() {

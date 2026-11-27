@@ -30,6 +30,7 @@ var LiveScreen = (function () {
       '<div class="scr-head"><div class="scr-title">TV en vivo</div><div class="scr-sub" id="live-sub"></div><div class="clock"></div></div>' +
       '<div id="live-main">' +
         '<div class="live-search" id="live-search"><input class="focusable" data-id="q" type="text" placeholder="Buscar canal…" autocomplete="off" spellcheck="false"></div>' +
+        '<div class="live-catbar" id="live-catbar"></div>' +
         '<div class="live-cats" id="live-cats"></div>' +
         '<div class="live-chans" id="live-chans"></div>' +
         '<div class="live-side">' +
@@ -89,11 +90,16 @@ var LiveScreen = (function () {
       activate: act('cats')
     });
     chans = new ListZone({
-      el: U.$('#live-chans'), itemHeight: 88, visible: 10,
+      el: U.$('#live-chans'), itemHeight: App.mobile ? 60 : 88, visible: 10,
       count: function () { return curItems().length; },
       render: function (i, row) { var c = curItems()[i]; if (c) row.appendChild(ChannelRow.build(c)); },
       onFocus: U.debounce(updateSide, 60),
-      onSelect: function (i) { play(curItems()[i]); },
+      onSelect: function (i) {
+        var c = curItems()[i];
+        // Celular: el primer toque lo muestra arriba; el segundo, en pantalla completa.
+        if (App.mobile && c && !Player.isLive(c)) { Player.playLive(c, { mini: S.previewRect(), ctxId: Data.category().id }); updateSide(); return; }
+        play(c);
+      },
       emptyText: '',
       activate: act('chans')
     });
@@ -105,6 +111,16 @@ var LiveScreen = (function () {
     U.$('[data-id="demo"]', S.el).addEventListener('click', function () { SettingsScreen.loadDemo(); });
     U.$('[data-id="settings"]', S.el).addEventListener('click', function () { App.go('settings', { focus: 'live-url' }); });
 
+    els.catbar = U.$('#live-catbar');
+    els.catbar.addEventListener('click', function (e) {
+      var chip = U.closestAttr(e.target, 'data-i', els.catbar);
+      if (chip) Data.setCat(parseInt(chip.getAttribute('data-i'), 10));
+    });
+    Data.on('resize', function () {
+      if (App.cur !== S) return;
+      chans.fit();
+      if (Player.kind === 'live' && Player.mode === 'mini') Player.setMode('mini', S.previewRect());
+    });
     Data.on('live', onLive);
     Data.on('cat', onCat);
     Data.on('favs', onFavs);
@@ -123,7 +139,21 @@ var LiveScreen = (function () {
     row.appendChild(inn);
   }
 
+  // Pestañas de categorías deslizables (solo se ven en el celular).
+  function renderCatbar() {
+    if (!App.mobile) return;
+    els.catbar.innerHTML = '';
+    Data.cats.forEach(function (c, i) {
+      var chip = U.el('div', 'cchip' + (i === Data.curCat ? ' on' : ''), (c.id === 'fav' ? '★ ' : '') + c.name + ' (' + c.items.length + ')');
+      chip.setAttribute('data-i', i);
+      els.catbar.appendChild(chip);
+    });
+    var on = els.catbar.children[Data.curCat];
+    if (on) els.catbar.scrollLeft = Math.max(0, on.offsetLeft - 12);
+  }
+
   function updateSub() {
+    renderCatbar();
     var c = Data.category(), t = c.name + '  ·  ' + c.items.length + ' canales';
     if (Data.epgState === 'loading') t += '  ·  cargando guía…';
     U.setText(els.sub, Data.channels.length ? t : '');
@@ -155,7 +185,10 @@ var LiveScreen = (function () {
     U.setText(els.next, nn && nn.next ? 'Después: ' + U.fmtClock(nn.next.s) + '   ' + nn.next.t : '');
     U.setText(els.favBtn, Favs.has(c.key) ? '★ Quitar de favoritos' : '☆ Añadir a favoritos');
   }
-  function updatePreview() { U.show(els.ph, Player.kind !== 'live'); }
+  function updatePreview() {
+    U.setText(els.ph, App.mobile ? 'Toca un canal para verlo aquí' : 'Elige un canal y pulsa OK para verlo');
+    U.show(els.ph, Player.kind !== 'live');
+  }
 
   function updateState() {
     var loading = Data.liveState === 'loading' && !Data.channels.length;
@@ -205,6 +238,7 @@ var LiveScreen = (function () {
     updateSide();
     updatePreview();
     updateState();
+    if (App.mobile) chans.fit();
   }
   function onCat() {
     cats.index = Data.curCat;
@@ -242,6 +276,7 @@ var LiveScreen = (function () {
     updateSide();
     updatePreview();
     updateState();
+    if (App.mobile) chans.fit();
   };
   S.focus = function () {
     if (!zone && Data.channels.length) zone = chans;
@@ -268,7 +303,7 @@ var LiveScreen = (function () {
     return false;
   };
   // Zona del video en miniatura (coincide con .preview-box en app.css).
-  S.previewRect = function () { return { left: 1182, top: 142, width: 686, height: 384 }; };
+  S.previewRect = function () { return App.rectOf(U.$('.preview-box', S.el)); };
   S.onPlayerExit = function () {
     var i = Player.kind === 'live' ? indexIn(curItems(), Player.item) : -1;
     if (i >= 0) chans.index = i;

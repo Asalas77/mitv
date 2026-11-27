@@ -56,7 +56,9 @@ var VodScreen = (function () {
     els.loading = U.$('#vod-loading');
 
     rowsZ = new RowsZone({
-      el: els.rows, rowHeight: 360, cardWidth: 206, visibleCards: 8,
+      // En el celular las carátulas son más chicas (ver .mobile en app.css).
+      el: els.rows, rowHeight: App.mobile ? 238 : 360, cardWidth: App.mobile ? 122 : 206,
+      visibleCards: App.mobile ? Math.max(2, Math.floor((window.innerWidth - 12) / 122)) : 8,
       rows: function () { return rows; },
       renderCard: renderCard,
       onFocus: updateHero,

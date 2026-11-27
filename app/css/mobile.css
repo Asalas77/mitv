@@ -1,0 +1,163 @@
+/*
+ * Celular (body.mobile): interfaz táctil a tamaño real de la pantalla.
+ * Vertical: video arriba, buscador, pestañas de categorías y lista.
+ * Horizontal: video a la izquierda y la lista a la derecha.
+ * Estos estilos no afectan al TV ni a la web en el PC (no tienen la clase "mobile").
+ */
+.live-catbar, .p-close { display: none; }
+body.mobile { -webkit-tap-highlight-color: transparent; }
+.mobile #screens { width: 100%; height: 100%; }
+.mobile .screen { width: 100%; height: auto; top: 0; bottom: 58px; }
+.mobile .hints, .mobile .numentry, .mobile .lz-bar, .mobile .menu-logo,
+.mobile .menu-item[data-screen="guide"], .mobile .side-info, .mobile .side-actions, .mobile .live-cats { display: none !important; }
+
+/* Barra de pestañas abajo */
+.mobile #menu { top: auto; left: 0; right: 0; bottom: 0; width: auto !important; height: 58px; padding: 0; display: flex;
+  border-right: 0; border-top: 1px solid #1a2029; box-shadow: none !important; }
+.mobile .menu-item { flex: 1; height: 58px; margin: 0; border-radius: 0; padding: 0; flex-direction: column; justify-content: center; }
+.mobile .menu-item svg { width: 22px; height: 22px; }
+.mobile #menu .menu-label { opacity: 1; margin: 3px 0 0; font-size: 11px; }
+.mobile #menu .menu-item.focus { background: none; color: #8f99a8; }
+.mobile #menu .menu-item.selected { color: #ffb300; }
+
+/* Elementos comunes */
+.mobile .scr-head { left: 12px; right: 12px; top: 6px; height: 40px; }
+.mobile .scr-title { font-size: 20px; }
+.mobile .scr-sub { font-size: 12px; margin-left: 10px; }
+.mobile .clock { font-size: 15px; padding-left: 10px; }
+.mobile .btn { height: 42px; line-height: 42px; padding: 0 18px; font-size: 15px; border-radius: 21px; margin: 0 8px 8px 0; }
+.mobile .zone-active .btn.focus, .mobile .btn.focus { -webkit-transform: none; transform: none; box-shadow: none; }
+.mobile .empty { left: 16px; right: 16px; top: 80px; }
+.mobile .empty-title { font-size: 22px; }
+.mobile .empty-text { font-size: 15px; line-height: 22px; margin: 10px auto 20px; }
+.mobile .empty-err { font-size: 13px; line-height: 18px; margin: -8px auto 16px; }
+.mobile .loading { left: 0; top: 160px; font-size: 16px; }
+.mobile .spin { width: 44px; height: 44px; border-width: 5px; }
+.mobile .lz-inner { right: 0; }
+.mobile .lz-row > .row-in { border-radius: 10px; padding: 0 10px; }
+.mobile .lz-empty { font-size: 14px; line-height: 20px; left: 12px; right: 12px; top: 14px; }
+.mobile .logo-ph { font-size: 14px; }
+
+/* TV en vivo (vertical) */
+.mobile .live-side { left: 0; top: 50px; width: 100%; height: auto; }
+.mobile .live-side .preview-box { width: 100%; height: 0; padding-bottom: 56.25%; border: 0; border-radius: 0; }
+.mobile .preview-ph { font-size: 14px; padding: 16px; }
+.mobile .live-search { left: 10px; right: 10px; width: auto; top: calc(58px + 56.25vw); }
+.mobile .live-search input { height: 40px; font-size: 16px; border-width: 2px; padding: 0 12px; border-radius: 10px; }
+.mobile .live-catbar { display: block; position: absolute; left: 0; right: 0; top: calc(106px + 56.25vw); height: 40px;
+  overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 0 10px; -webkit-overflow-scrolling: touch; }
+.live-catbar::-webkit-scrollbar, .det-seasons::-webkit-scrollbar { display: none; }
+.cchip { display: inline-block; height: 32px; line-height: 32px; padding: 0 12px; border-radius: 16px; background: #1c222b;
+  font-size: 13px; margin-right: 6px; color: #c9d1dc; }
+.cchip.on { background: #ffb300; color: #121212; }
+.mobile .live-chans { left: 4px; right: 4px; width: auto; top: calc(150px + 56.25vw); bottom: 0; height: auto; }
+.mobile .ch-row { padding: 0 8px 0 2px !important; }
+.mobile .ch-num { width: 36px; font-size: 14px; }
+.mobile .ch-row .logo { width: 40px; height: 40px; margin: 0 10px; border-radius: 8px; }
+.mobile .ch-name { font-size: 16px; }
+.mobile .ch-prog { font-size: 12px; }
+.mobile .ch-row .pbar { margin-top: 3px; height: 3px; }
+.mobile .ch-fav { font-size: 16px; margin-left: 6px; }
+.mobile .ch-live { font-size: 10px; padding: 2px 5px; margin-left: 6px; }
+/* TV en vivo (horizontal): video a la izquierda */
+body.mobile:not(.portrait) .live-side { width: 50%; }
+body.mobile:not(.portrait) .live-search { left: calc(50% + 10px); top: 50px; }
+body.mobile:not(.portrait) .live-catbar { left: 50%; top: 98px; }
+body.mobile:not(.portrait) .live-chans { left: calc(50% + 4px); top: 142px; }
+
+/* Reproductor */
+.mobile #player.full { width: 100% !important; height: 100% !important; }
+.mobile #player.full .p-close { display: block; position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; line-height: 44px;
+  text-align: center; border-radius: 22px; background: rgba(0, 0, 0, .6); color: #fff; font-size: 20px; z-index: 6; cursor: pointer; }
+.mobile .p-banner { left: 8px; right: 8px; bottom: 8px; height: auto; padding: 10px 12px; border-radius: 12px; }
+.mobile .pb-logo .logo { width: 52px; height: 52px; border-radius: 10px; }
+.mobile .pb-logo .logo-ph { font-size: 18px; }
+.mobile .pb-main { margin-left: 12px; }
+.mobile .pb-top { font-size: 16px; }
+.mobile .pb-num { margin-right: 8px; }
+.mobile .pb-now { font-size: 14px; margin-top: 4px; }
+.mobile .pb-now-time { font-size: 12px; margin-right: 8px; }
+.mobile .pb-bar { margin-top: 6px; width: 90%; }
+.mobile .pb-next { font-size: 12px; margin-top: 4px; }
+.mobile .pb-side { display: none; }
+.mobile .p-zap { width: 88%; padding: 12px 0 0 8px; }
+.mobile .pz-head { font-size: 15px; height: 36px; }
+.mobile .pz-cat { margin: 0 10px; max-width: 70%; }
+.mobile .pz-list { left: 8px; top: 50px; width: calc(100% - 16px); bottom: 0; height: auto; }
+.mobile .p-vod { height: auto; padding: 40px 16px 14px; }
+.mobile .pv-title { font-size: 16px; padding-right: 50px; }
+.mobile .pv-bar { margin-top: 12px; height: 6px; }
+.mobile .pv-knob { width: 18px; height: 18px; top: -6px; margin-left: -9px; }
+.mobile .pv-times { font-size: 13px; margin-top: 8px; }
+.mobile .p-error-box { padding: 14px 16px; max-width: 90%; }
+.mobile .p-error-title { font-size: 18px; }
+.mobile .p-error-text { font-size: 13px; line-height: 18px; }
+
+/* Avisos y ventanas */
+.mobile .toast { left: 10px; right: 10px; bottom: 70px; }
+.mobile .toast span { font-size: 14px; padding: 10px 16px; line-height: 20px; }
+.mobile .modal-box { width: 92% !important; padding: 20px 18px 12px; }
+.mobile .modal-title { font-size: 19px; }
+.mobile .modal-text { font-size: 14px; line-height: 20px; margin-top: 10px; }
+.mobile .modal-actions { margin-top: 18px; }
+.mobile .pair-qr img { width: 150px; height: 150px; }
+.mobile .pair-info { margin-left: 14px; }
+.mobile .pair-step { font-size: 13px; line-height: 18px; margin-bottom: 6px; }
+.mobile .pair-alt { font-size: 11px; line-height: 15px; margin-top: 6px; }
+.mobile .pair-code { font-size: 26px; letter-spacing: 3px; }
+.mobile .pair-status { font-size: 12px; }
+
+/* Películas y series */
+.mobile .backdrop, .mobile .backdrop-fade { width: 100%; height: 50vw; }
+.mobile .vod-hero { left: 12px; right: 12px; width: auto; top: 48px; height: 88px; }
+.mobile .vh-title { font-size: 18px; }
+.mobile .vh-meta { font-size: 12px; margin-top: 4px; }
+.mobile .vh-desc { font-size: 12px; line-height: 17px; max-height: 34px; margin-top: 4px; }
+.mobile .vod-rows { left: 10px; top: 140px; }
+.mobile .vr-row { height: 238px; }
+.mobile .vr-title { font-size: 15px; height: 30px; line-height: 30px; }
+.mobile .vr-track { top: 32px; height: 204px; }
+.mobile .vr-cards { height: 204px; }
+.mobile .card { width: 110px; top: 4px; }
+.mobile .card-img { width: 110px; height: 160px; border-width: 2px; border-radius: 8px; }
+.mobile .zone-active .card.focus .card-img { -webkit-transform: none; transform: none; }
+.mobile .card-title { font-size: 12px; margin-top: 4px; }
+.mobile .card-sub { font-size: 11px; }
+.mobile .card-badge { font-size: 10px; }
+.mobile .card .pbar { left: 6px; right: 6px; bottom: 6px; height: 4px; }
+.mobile .poster-ph { font-size: 13px; line-height: 16px; padding: 8px; }
+
+/* Ficha */
+.mobile .det-poster { left: 12px; top: 50px; width: 110px; height: 165px; }
+.mobile .det-poster .poster { border-radius: 10px; }
+.mobile .det-poster .poster-ph { font-size: 14px; line-height: 18px; }
+.mobile .det-info { left: 134px; right: 12px; top: 50px; }
+.mobile .det-title, .mobile .det-info.series .det-title { font-size: 18px; line-height: 22px; max-height: 44px; }
+.mobile .det-meta { font-size: 12px; margin-top: 6px; }
+.mobile .det-desc { font-size: 13px; line-height: 18px; margin-top: 8px; max-height: 90px; }
+.mobile .det-info.series .det-desc { max-height: 72px; }
+.mobile .det-actions { margin-top: 12px; }
+.mobile .det-seasons { left: 12px; right: 12px; top: 228px; height: 44px; overflow-x: auto; }
+.mobile .det-seasons .chip { height: 34px; line-height: 34px; font-size: 13px; padding: 0 12px; margin-right: 6px; }
+.mobile .det-eps { left: 6px; right: 6px; width: auto; top: 278px; bottom: 0; height: auto; }
+.mobile .ep-row .ep-thumb { width: 96px; height: 54px; margin-right: 10px; border-radius: 6px; }
+.mobile .ep-title { font-size: 14px; }
+.mobile .ep-sub { font-size: 11px; }
+.mobile .ep-row .pbar { width: 120px; height: 3px; margin-top: 4px; }
+
+/* Ajustes */
+.mobile .set-scroll { left: 0; top: 48px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.mobile .set-inner { padding: 4px 12px 40px; }
+.mobile .set-sec { margin-bottom: 26px; }
+.mobile .set-h { font-size: 18px; }
+.mobile .set-p { font-size: 13px; line-height: 18px; margin-bottom: 8px; }
+.mobile .set-item { flex-wrap: wrap; padding: 10px 10px 2px 12px; }
+.mobile .set-item .si-text { -webkit-flex-basis: 100%; flex-basis: 100%; padding-bottom: 8px; }
+.mobile .set-item b { font-size: 15px; }
+.mobile .set-item small { font-size: 11px; }
+.mobile .set-form { padding: 12px 12px 4px; }
+.mobile .field { display: block; margin-bottom: 10px; }
+.mobile .field label { display: block; width: auto; font-size: 13px; margin-bottom: 4px; }
+.mobile .field input { width: 100%; height: 42px; font-size: 16px; border-width: 2px; padding: 0 12px; }
+.mobile .set-empty { font-size: 13px; }
+.mobile .set-status { font-size: 13px; }
