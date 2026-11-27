@@ -59,11 +59,11 @@ body.mobile { -webkit-tap-highlight-color: transparent; }
 .mobile .ch-row .pbar { margin-top: 3px; height: 3px; }
 .mobile .ch-fav { font-size: 16px; margin-left: 6px; }
 .mobile .ch-live { font-size: 10px; padding: 2px 5px; margin-left: 6px; }
-/* TV en vivo (horizontal): video a la izquierda */
-body.mobile:not(.portrait) .live-side { width: 50%; }
-body.mobile:not(.portrait) .live-search { left: calc(50% + 10px); top: 50px; }
-body.mobile:not(.portrait) .live-catbar { left: 50%; top: 98px; }
-body.mobile:not(.portrait) .live-chans { left: calc(50% + 4px); top: 142px; }
+/* TV en vivo (horizontal): lista a la izquierda, video a la derecha */
+body.mobile:not(.portrait) .live-side { left: 50%; width: 50%; }
+body.mobile:not(.portrait) .live-search { left: 10px; right: calc(50% + 10px); top: 50px; }
+body.mobile:not(.portrait) .live-catbar { left: 0; right: 50%; top: 98px; }
+body.mobile:not(.portrait) .live-chans { left: 4px; right: calc(50% + 4px); top: 142px; }
 
 /* Reproductor */
 .mobile #player.full { width: 100% !important; height: 100% !important; }
