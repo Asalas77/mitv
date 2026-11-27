@@ -161,3 +161,8 @@ Para depurar en el TV: `ares-inspect --device tv --app com.mitv.player --open`.
   (CORS). Las apps instaladas en el TV no suelen tener esa restricción.
 
 Úsala solo con contenido que tengas derecho a ver.
+
+## Licencia
+
+Código bajo licencia [MIT](LICENSE). Los componentes de `app/vendor/` (hls.js, qrcode-generator)
+mantienen sus propias licencias, y las señales de las listas pertenecen a sus dueños.
