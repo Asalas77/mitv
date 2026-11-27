@@ -90,13 +90,7 @@ var Player = (function () {
   function setSource(url) {
     clearSource();
     var my = session, type = mimeFor(url);
-    // En una página https el navegador bloquea videos http (contenido mixto).
-    if (location.protocol === 'https:' && /^http:\/\//i.test(url)) {
-      spinner(false);
-      P.failed = true;
-      showError('No disponible en la versión web', 'Este canal usa una conexión http que el navegador bloquea en páginas seguras. Se puede ver en la app del TV.');
-      return;
-    }
+    P.mixed = location.protocol === 'https:' && /^http:\/\//i.test(url);   // canal http en la web https
     if (type === 'application/vnd.apple.mpegurl' && !v.canPlayType(type) && window.Hls && window.Hls.isSupported && window.Hls.isSupported()) {
       P.hls = new window.Hls();
       P.hls.on(window.Hls.Events.ERROR, function (ev, data) { if (data && data.fatal) onError(4, my); });
@@ -147,6 +141,10 @@ var Player = (function () {
       return;
     }
     P.failed = true;
+    if (P.mixed) {
+      showError('El navegador bloqueó este canal', 'Usa una conexión http y esta página es https. Permite el "Contenido no seguro" para este sitio en el navegador, o míralo en la app del TV o de Android.');
+      return;
+    }
     var msg = code === 4 ? 'El formato no es compatible o el enlace no está disponible.' :
       code === 2 ? 'Error de red al cargar el video.' :
       code === 3 ? 'No se pudo decodificar el video.' : 'No se pudo reproducir.';
