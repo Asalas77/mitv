@@ -5,7 +5,7 @@
  */
 var CONFIG = {
   APP_NAME: 'Mi TV',
-  VERSION: '1.0.4',
+  VERSION: '1.0.5',
   STORAGE_PREFIX: 'mitv.',
   AUTOPLAY_LAST_CHANNEL: true,   // al abrir la app, reproduce en miniatura el último canal visto
   EPG_PAST_HOURS: 3,             // horas de guía hacia atrás que se conservan
