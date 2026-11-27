@@ -1,0 +1,9 @@
+{
+  "name": "mitv-web",
+  "private": true,
+  "type": "module",
+  "description": "Sitio web de Mi TV y función para enviar listas desde el celular",
+  "dependencies": {
+    "@netlify/blobs": "^10.0.0"
+  }
+}

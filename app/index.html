@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Mi TV</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="stage">
+
+  <!-- Reproductor: un solo <video> que se muestra en miniatura o en pantalla completa -->
+  <div id="player" class="hidden">
+    <video id="video" preload="auto"></video>
+    <div class="p-spinner hidden"><div class="spin"></div></div>
+    <div class="p-error hidden"><div class="p-error-box"><div class="p-error-title"></div><div class="p-error-text"></div></div></div>
+    <div class="p-banner hidden">
+      <div class="pb-logo"></div>
+      <div class="pb-main">
+        <div class="pb-top"><span class="pb-num"></span><span class="pb-name"></span><span class="pb-fav hidden">★</span></div>
+        <div class="pb-now"><span class="pb-now-time"></span><span class="pb-now-title"></span></div>
+        <div class="pbar pb-bar"><i></i></div>
+        <div class="pb-next"></div>
+      </div>
+      <div class="pb-side"><div class="clock pb-clock"></div><div class="pb-hint">▲▼ cambiar canal<br>OK lista de canales<br>● Rojo favorito</div></div>
+    </div>
+    <div class="p-zap hidden">
+      <div class="pz-head"><span class="pz-arrow">◀</span><span class="pz-cat"></span><span class="pz-arrow">▶</span></div>
+      <div class="pz-list"></div>
+    </div>
+    <div class="p-vod hidden">
+      <div class="pv-title"></div>
+      <div class="pv-bar"><div class="pv-fill"></div><div class="pv-knob"></div></div>
+      <div class="pv-times"><span class="pv-cur">0:00</span><span class="pv-state"></span><span class="pv-dur">0:00</span></div>
+    </div>
+  </div>
+
+  <nav id="menu">
+    <div class="menu-logo"><img src="img/icon.png" alt=""><span class="menu-label app-name">Mi TV</span></div>
+    <div class="menu-item" data-screen="live">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 8v5l4.5-2.5z" fill="currentColor"/></svg>
+      <span class="menu-label">TV en vivo</span>
+    </div>
+    <div class="menu-item" data-screen="guide">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="9" width="7" height="5" rx="1"/><rect x="11" y="9" width="11" height="5" rx="1"/><rect x="2" y="16" width="11" height="5" rx="1"/><rect x="15" y="16" width="7" height="5" rx="1"/></svg>
+      <span class="menu-label">Guía</span>
+    </div>
+    <div class="menu-item" data-screen="vod">
+      <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 2v20M16 2v20M4 7h4M4 12h4M4 17h4M16 7h4M16 12h4M16 17h4" stroke="currentColor" stroke-width="2"/></svg>
+      <span class="menu-label">Películas y series</span>
+    </div>
+    <div class="menu-item" data-screen="settings">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="6" r="2.7" fill="currentColor"/><circle cx="16" cy="12" r="2.7" fill="currentColor"/><circle cx="7" cy="18" r="2.7" fill="currentColor"/></svg>
+      <span class="menu-label">Ajustes</span>
+    </div>
+  </nav>
+
+  <main id="screens">
+    <section id="screen-live" class="screen hidden"></section>
+    <section id="screen-guide" class="screen hidden"></section>
+    <section id="screen-vod" class="screen hidden"></section>
+    <section id="screen-detail" class="screen hidden"></section>
+    <section id="screen-settings" class="screen hidden"></section>
+  </main>
+
+  <div id="numentry" class="numentry hidden"></div>
+  <div id="toast" class="toast hidden"></div>
+  <div id="modal" class="modal hidden"></div>
+</div>
+
+<!-- hls.js (Apache-2.0): solo se usa en navegadores sin HLS nativo, como Firefox -->
+<script src="vendor/hls.min.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="js/config.js"></script>
+<script src="js/util.js"></script>
+<script src="js/keys.js"></script>
+<script src="js/store.js"></script>
+<script src="js/m3u.js"></script>
+<script src="js/xmltv.js"></script>
+<script src="js/data.js"></script>
+<script src="js/jellyfin.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/player.js"></script>
+<script src="js/pair.js"></script>
+<script src="js/screens/live.js"></script>
+<script src="js/screens/guide.js"></script>
+<script src="js/screens/vod.js"></script>
+<script src="js/screens/detail.js"></script>
+<script src="js/screens/settings.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

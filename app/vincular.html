@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi TV · Enviar lista al TV</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: #0d1015; color: #e9edf2; }
+  main { max-width: 520px; margin: 0 auto; padding: 28px 20px 40px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  p.lead { color: #9aa4b2; margin: 0 0 24px; line-height: 1.45; }
+  label { display: block; font-size: 14px; color: #c9d1dc; margin: 18px 0 6px; }
+  input, select { width: 100%; font-size: 17px; padding: 13px 14px; border-radius: 10px; border: 2px solid #2a313c; background: #12161c; color: #fff; }
+  input:focus, select:focus { outline: none; border-color: #ffb300; }
+  #code { font-size: 26px; letter-spacing: 6px; text-transform: uppercase; text-align: center; font-weight: bold; }
+  small { color: #6f7a89; display: block; margin-top: 5px; }
+  button { width: 100%; margin-top: 26px; font-size: 18px; font-weight: bold; padding: 15px; border: 0; border-radius: 12px; background: #ffb300; color: #121212; }
+  button:disabled { opacity: .5; }
+  .msg { margin-top: 18px; padding: 14px; border-radius: 10px; line-height: 1.4; display: none; }
+  .msg.ok { display: block; background: #16351f; color: #a5e5b3; }
+  .msg.err { display: block; background: #3a1717; color: #ffb4ab; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; color: #ffb300; font-weight: bold; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="brand"><img src="img/largeIcon.png" alt=""> Mi TV</div>
+  <h1>Enviar una lista a tu TV</h1>
+  <p class="lead">Pega la dirección de tu lista M3U y pulsa Enviar. Tu TV la agregará en unos segundos.</p>
+  <form id="f">
+    <label for="code">Código que aparece en el TV</label>
+    <input id="code" maxlength="7" autocomplete="off" autocapitalize="characters" required>
+    <label for="kind">Tipo de lista</label>
+    <select id="kind"><option value="live">Canales de TV</option><option value="vod">Películas y series</option></select>
+    <label for="url">Dirección de la lista (M3U)</label>
+    <input id="url" type="url" inputmode="url" placeholder="https://…/lista.m3u" required>
+    <label for="epg">Guía de programación XMLTV (opcional)</label>
+    <input id="epg" type="url" inputmode="url" placeholder="https://…/guia.xml">
+    <label for="name">Nombre (opcional)</label>
+    <input id="name" maxlength="60" placeholder="Mi proveedor">
+    <button id="send" type="submit">Enviar al TV</button>
+    <div id="msg" class="msg"></div>
+  </form>
+</main>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), $ = function (id) { return document.getElementById(id); };
+  $('code').value = (q.get('c') || '').toUpperCase();
+  function show(text, ok) { var m = $('msg'); m.textContent = text; m.className = 'msg ' + (ok ? 'ok' : 'err'); }
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('send').disabled = true;
+    fetch('/api/vincular', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: $('code').value, kind: $('kind').value, url: $('url').value, epg: $('epg').value, name: $('name').value })
+    }).then(function (r) { return r.json(); }).then(function (r) {
+      if (r.ok) show('¡Listo! Mira tu TV: la lista se agregará en unos segundos.', true);
+      else show(r.error || 'No se pudo enviar.', false);
+    }).catch(function () { show('No hay conexión. Inténtalo otra vez.', false); })
+      .then(function () { $('send').disabled = false; });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+#EXTM3U
+#EXTINF:596 tvg-logo="posters/big-buck-bunny.jpg" group-title="Cine abierto · Blender Foundation" year="2008" description="Un conejo enorme y bonachón decide darles una lección a tres roedores que no lo dejan en paz. Cortometraje libre de Blender Foundation (CC BY 3.0).",Big Buck Bunny
+https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4
+#EXTINF:888 tvg-logo="posters/sintel.jpg" group-title="Cine abierto · Blender Foundation" year="2010" description="Una joven recorre tierras peligrosas buscando al dragón bebé que crió y perdió. Cortometraje libre de Blender Foundation (CC BY 3.0).",Sintel
+https://archive.org/download/Sintel/sintel-2048-stereo_512kb.mp4
+#EXTINF:734 tvg-logo="posters/tears-of-steel.jpg" group-title="Cine abierto · Blender Foundation" year="2012" description="Un grupo de científicos y guerreros intenta salvar Ámsterdam de un ejército de robots. Cortometraje libre de Blender Foundation (CC BY 3.0).",Tears of Steel
+https://archive.org/download/Tears-of-Steel/tears_of_steel_720p.mp4
+#EXTINF:654 tvg-logo="posters/elephants-dream.jpg" group-title="Cine abierto · Blender Foundation" year="2006" description="Dos personajes exploran una máquina extraña e infinita que uno de ellos cree controlar. El primer cortometraje libre de Blender Foundation (CC BY 2.5).",Elephants Dream
+https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4

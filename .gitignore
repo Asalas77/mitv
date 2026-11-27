@@ -1,0 +1,19 @@
+# Carpeta local de Netlify (vínculo con tu cuenta)
+.netlify
+
+# Llave de firma del APK: NUNCA subirla (quien la tenga puede publicar "actualizaciones" de tu app)
+android/firma/
+
+# Archivos generados
+android/build/
+dist/
+node_modules/
+
+# Videos de prueba (se generan con tools/generar_medios_prueba.py)
+tools/media/
+
+# Informe de canales caídos (se regenera con tools/unir_listas.py)
+tools/canales-caidos.txt
+
+__pycache__/
+*.pyc

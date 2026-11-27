@@ -1,0 +1,14 @@
+{
+  "id": "com.mitv.player",
+  "version": "1.0.4",
+  "vendor": "Mi TV",
+  "type": "web",
+  "main": "index.html",
+  "title": "Mi TV",
+  "icon": "img/icon.png",
+  "largeIcon": "img/largeIcon.png",
+  "bgColor": "#0d1015",
+  "iconColor": "#0d1015",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": true
+}

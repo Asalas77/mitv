@@ -1,0 +1,10 @@
+# Sitio web de Mi TV en Netlify: la app (carpeta app/) y la función para vincular listas desde el celular.
+[build]
+  publish = "app"
+  functions = "netlify/functions"
+
+[[headers]]
+  for = "/listas/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "audio/x-mpegurl; charset=utf-8"
