@@ -1,0 +1,10 @@
+Mi TV
+Copyright (c) 2026 Alejandro Salas
+
+Third-party components included in app/vendor/ keep their own licenses:
+- hls.js (Apache License 2.0) - see app/vendor/hls.js-LICENSE.txt
+- qrcode-generator by Kazuhiko Arase (MIT License)
+
+The bundled channel list (app/listas/canales.m3u) is derived from the iptv-org
+project (https://github.com/iptv-org/iptv); the streams belong to their owners.
+Demo movies are by Blender Foundation under Creative Commons licenses.
