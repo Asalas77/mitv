@@ -91,7 +91,10 @@ var Player = (function () {
     clearSource();
     var my = session, type = mimeFor(url);
     P.mixed = location.protocol === 'https:' && /^http:\/\//i.test(url);   // canal http en la web https
-    if (type === 'application/vnd.apple.mpegurl' && !v.canPlayType(type) && window.Hls && window.Hls.isSupported && window.Hls.isSupported()) {
+    // hls.js se usa si el navegador no tiene HLS propio, y también para canales http en la web:
+    // el HLS nativo de Chrome no los reconoce aunque se permita el "contenido no seguro".
+    var useHlsJs = type === 'application/vnd.apple.mpegurl' && (P.mixed || !v.canPlayType(type));
+    if (useHlsJs && window.Hls && window.Hls.isSupported && window.Hls.isSupported()) {
       P.hls = new window.Hls();
       P.hls.on(window.Hls.Events.ERROR, function (ev, data) { if (data && data.fatal) onError(4, my); });
       P.hls.loadSource(url);
